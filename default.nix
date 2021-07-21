@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "accentor";
       repo = "web";
-      rev = "main";
-      sha256 = "sha256-L0ifKjdsVZxB8a/BOZqyCOqSRzxE9wgPufHBNbopYX4=";
+      rev = "f5dbafc";
+      sha256 = "sha256-zB5LppyzvLxeEjYrgjnT/DXiTPGVusFdQQdBAoo/sCU=";
     };
     packageJSON = ./package.json;
     yarnLock = ./yarn.lock;
@@ -29,7 +29,7 @@ let
   api = pkgs.fetchFromGitHub {
     owner = "accentor";
     repo = "api";
-    rev = "main";
+    rev = "d1987e1";
     sha256 = "sha256-uOVgwbs0DeHr+D/ihwjL4zMUDUrHlEV1HxCy/5jlJj0=";
   };
   gems = pkgs.bundlerEnv {
