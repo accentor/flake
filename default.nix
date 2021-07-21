@@ -4,42 +4,9 @@ with lib;
 
 let
   cfg = config.services.accentor;
-  web = pkgs.mkYarnPackage rec {
-    pname = "accentor-web";
-    version = "unstable";
-    src = pkgs.fetchFromGitHub {
-      owner = "accentor";
-      repo = "web";
-      rev = "f5dbafc";
-      sha256 = "sha256-zB5LppyzvLxeEjYrgjnT/DXiTPGVusFdQQdBAoo/sCU=";
-    };
-    packageJSON = ./package.json;
-    yarnLock = ./yarn.lock;
-    yarnNix = ./yarn.nix;
-    buildPhase = ''
-      cp deps/accentor/postcss.config.js .
-      yarn run build
-    '';
-    installPhase = ''
-      cp -r deps/accentor/dist $out
-      rm $out/**/*.map
-    '';
-    distPhase = "true";
-  };
-  api = pkgs.fetchFromGitHub {
-    owner = "accentor";
-    repo = "api";
-    rev = "d1987e1";
-    sha256 = "sha256-uOVgwbs0DeHr+D/ihwjL4zMUDUrHlEV1HxCy/5jlJj0=";
-  };
-  gems = pkgs.bundlerEnv {
-    name = "accentor-api-env";
-    ruby = pkgs.ruby_3_0;
-    gemfile = ./Gemfile;
-    lockfile = ./Gemfile.lock;
-    gemset = ./gemset.nix;
-    groups = [ "default" "development" "test" "production" ];
-  };
+  web = callPackage ./pkgs/web.nix {};
+  api = callPackage ./pkgs/api.nix {};
+  gems = callPackage ./pkgs/api-env.nix {};
   env = {
     BOOTSNAP_CACHE_DIR = "/var/tmp/accentor/bootsnap";
     DATABASE_URL = "postgresql://%2Frun%2Fpostgresql/accentor";
