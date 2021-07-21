@@ -9,8 +9,11 @@ service to your system flake:
 
 ```nix
 {
-  # add this module as an input
-  inputs.accentor.url = "github:rien/accentor-nix/main";
+  # add this flake as an input
+  inputs.accentor = {
+    url = "github:accentor/flake/main";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = { self, nixpkgs, accentor }: {
     # change `yourhostname` to your actual hostname
