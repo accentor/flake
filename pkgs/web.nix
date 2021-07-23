@@ -1,7 +1,12 @@
-{ mkYarnPackage, fetchFromGitHub }:
+{
+  mkYarnPackage,
+  fetchFromGitHub,
+  packageJSON ? ./package.json,
+  yarnLock ? ./yarn.lock,
+  yarnNix ? ./yarn.nix,
+}:
 
 mkYarnPackage rec {
-
   pname = "accentor-web";
   version = "0.24.0";
 
@@ -12,9 +17,7 @@ mkYarnPackage rec {
     sha256 = "sha256-zB5LppyzvLxeEjYrgjnT/DXiTPGVusFdQQdBAoo/sCU=";
   };
 
-  packageJSON = ./package.json;
-  yarnLock = ./yarn.lock;
-  yarnNix = ./yarn.nix;
+  inherit packageJSON yarnLock yarnNix;
 
   buildPhase = ''
       cp deps/accentor/postcss.config.js .

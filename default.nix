@@ -4,9 +4,9 @@ with lib;
 
 let
   cfg = config.services.accentor;
-  web = callPackage ./pkgs/web.nix {};
-  api = callPackage ./pkgs/api.nix {};
-  gems = callPackage ./pkgs/api-env.nix {};
+  api = cfg.apiPackage;
+  gems = api.env;
+  web = cfg.webPackage;
   env = {
     BOOTSNAP_CACHE_DIR = "/var/tmp/accentor/bootsnap";
     DATABASE_URL = "postgresql://%2Frun%2Fpostgresql/accentor";
@@ -86,9 +86,27 @@ in
         null (the default), no nginx virtualHost will be configured.
       '';
     };
+
+    apiPackage = mkOption {
+      description = "Accentor API package to use";
+      default = pkgs.accentor-api;
+      defaultText = "pkgs.accentor-api";
+      type = types.package;
+    };
+
+    webPackage = mkOption {
+      description = "Accentor web package to use";
+      default = pkgs.accentor-web;
+      defaultText = "pkgs.accentor-web";
+      type = types.package;
+    };
   };
 
   config = mkIf cfg.enable {
+    nixpkgs.overlays = [(self: super: {
+      accentor-api = self.callPackage ./pkgs/api.nix {};
+      accentor-web = self.callPackage ./pkgs/web.nix {};
+    })];
     environment.systemPackages = [ console ];
 
     services.postgresql = {

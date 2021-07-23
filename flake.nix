@@ -9,7 +9,6 @@
       nixpkgs.legacyPackages.${system}.callPackage package {};
     makePackages = system: {
       accentor-api = call system ./pkgs/api.nix;
-      accentor-api-env = call system ./pkgs/api-env.nix;
       accentor-web = call system ./pkgs/web.nix;
     };
   in rec {
