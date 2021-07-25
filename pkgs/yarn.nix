@@ -2,6 +2,14 @@
   offline_cache = linkFarm "offline" packages;
   packages = [
     {
+      name = "_accentor_api_client_js___api_client_js_0.11.2.tgz";
+      path = fetchurl {
+        name = "_accentor_api_client_js___api_client_js_0.11.2.tgz";
+        url  = "https://registry.yarnpkg.com/@accentor/api-client-js/-/api-client-js-0.11.2.tgz";
+        sha1 = "1d606360cc03c50888025cede40339ece36ef5f0";
+      };
+    }
+    {
       name = "_babel_code_frame___code_frame_7.12.13.tgz";
       path = fetchurl {
         name = "_babel_code_frame___code_frame_7.12.13.tgz";
@@ -7778,11 +7786,11 @@
       };
     }
     {
-      name = "sass___sass_1.35.2.tgz";
+      name = "sass___sass_1.36.0.tgz";
       path = fetchurl {
-        name = "sass___sass_1.35.2.tgz";
-        url  = "https://registry.yarnpkg.com/sass/-/sass-1.35.2.tgz";
-        sha1 = "b732314fcdaf7ef8d0f1698698adc378043cb821";
+        name = "sass___sass_1.36.0.tgz";
+        url  = "https://registry.yarnpkg.com/sass/-/sass-1.36.0.tgz";
+        sha1 = "5912ef9d5d16714171ba11cb17edb274c4bbc07e";
       };
     }
     {
@@ -9178,11 +9186,11 @@
       };
     }
     {
-      name = "vuetify___vuetify_2.5.6.tgz";
+      name = "vuetify___vuetify_2.5.7.tgz";
       path = fetchurl {
-        name = "vuetify___vuetify_2.5.6.tgz";
-        url  = "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.6.tgz";
-        sha1 = "9cbb1eacece6c42028216312b9be23e35a7f5cf4";
+        name = "vuetify___vuetify_2.5.7.tgz";
+        url  = "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.7.tgz";
+        sha1 = "0c7cfa143bffa6a14ef3ca5cfd8f2135713f4360";
       };
     }
     {
