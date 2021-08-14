@@ -103,10 +103,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [(self: super: {
-      accentor-api = self.callPackage ./pkgs/api.nix {};
-      accentor-web = self.callPackage ./pkgs/web.nix {};
-    })];
+    nixpkgs.overlays = [
+      (self: super: {
+        accentor-api = self.callPackage ./pkgs/api.nix { };
+        accentor-web = self.callPackage ./pkgs/web.nix { };
+      })
+    ];
     environment.systemPackages = [ console ];
 
     services.postgresql = {
@@ -165,7 +167,8 @@ in
           };
         };
 
-      }) cfg.workers));
+      })
+      cfg.workers));
 
     users.users.accentor = {
       group = "accentor";
@@ -176,28 +179,31 @@ in
     users.groups.accentor.gid = 314;
 
     services.nginx.virtualHosts = mkIf (cfg.nginx != null) {
-      "${cfg.hostname}" = mkMerge [ cfg.nginx {
-        root = web;
-        locations = {
-          "/api" = {
-            proxyPass = "http://localhost:3000";
-            extraConfig = ''
-              proxy_set_header X-Forwarded-Ssl on;
-              client_max_body_size 40M;
+      "${cfg.hostname}" = mkMerge [
+        cfg.nginx
+        {
+          root = web;
+          locations = {
+            "/api" = {
+              proxyPass = "http://localhost:3000";
+              extraConfig = ''
+                proxy_set_header X-Forwarded-Ssl on;
+                client_max_body_size 40M;
+              '';
+            };
+            "/rails" = {
+              proxyPass = "http://localhost:3000";
+              extraConfig = ''
+                proxy_set_header X-Forwarded-Ssl on;
+              '';
+            };
+            "/".extraConfig = ''
+              autoindex on;
+              try_files $uri $uri/ /index.html =404;
             '';
           };
-          "/rails" = {
-            proxyPass = "http://localhost:3000";
-            extraConfig = ''
-              proxy_set_header X-Forwarded-Ssl on;
-            '';
-          };
-          "/".extraConfig = ''
-            autoindex on;
-            try_files $uri $uri/ /index.html =404;
-          '';
-        };
-      }];
+        }
+      ];
     };
   };
 }

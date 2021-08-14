@@ -1,22 +1,22 @@
-{
-  stdenv,
-  fetchFromGitHub,
-  ruby_3_0,
-  bundlerEnv,
-  gemfile ? ./Gemfile,
-  lockfile ? ./Gemfile.lock,
-  gemset ? ./gemset.nix,
+{ stdenv
+, fetchFromGitHub
+, ruby_3_0
+, bundlerEnv
+, gemfile ? ./Gemfile
+, lockfile ? ./Gemfile.lock
+, gemset ? ./gemset.nix
+,
 }:
 
 stdenv.mkDerivation rec {
   pname = "accentor-api";
-  version = "0.11.1";
+  version = "0.12.0";
 
   src = fetchFromGitHub {
     owner = "accentor";
     repo = "api";
     rev = "v${version}";
-    sha256 = "sha256-uOVgwbs0DeHr+D/ihwjL4zMUDUrHlEV1HxCy/5jlJj0=";
+    sha256 = "44G1y+bXBSqSaTdOObV/jcrOZBiynx7JYjrV3/Ae90Y=";
   };
 
   installPhase = ''

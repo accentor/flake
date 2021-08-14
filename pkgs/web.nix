@@ -1,9 +1,9 @@
-{
-  mkYarnPackage,
-  fetchFromGitHub,
-  packageJSON ? ./package.json,
-  yarnLock ? ./yarn.lock,
-  yarnNix ? ./yarn.nix,
+{ mkYarnPackage
+, fetchFromGitHub
+, packageJSON ? ./package.json
+, yarnLock ? ./yarn.lock
+, yarnNix ? ./yarn.nix
+,
 }:
 
 mkYarnPackage rec {
@@ -20,13 +20,13 @@ mkYarnPackage rec {
   inherit packageJSON yarnLock yarnNix;
 
   buildPhase = ''
-      cp deps/accentor/postcss.config.js .
-      yarn run build
+    cp deps/accentor/postcss.config.js .
+    yarn run build
   '';
 
   installPhase = ''
-      cp -r deps/accentor/dist $out
-      rm $out/**/*.map
+    cp -r deps/accentor/dist $out
+    rm $out/**/*.map
   '';
 
   distPhase = "true";
