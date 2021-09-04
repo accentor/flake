@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation rec {
   pname = "accentor-api";
-  version = "0.12.0";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
     owner = "accentor";
     repo = "api";
     rev = "v${version}";
-    sha256 = "44G1y+bXBSqSaTdOObV/jcrOZBiynx7JYjrV3/Ae90Y=";
+    sha256 = "j2dvkff7mIQZaQAepKL12Z3yTr3HmWXRujhj/Aa23Y0=";
   };
 
   installPhase = ''
