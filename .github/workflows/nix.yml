@@ -9,7 +9,7 @@ jobs:
         pkg:
           - accentor-web
           - accentor-api
-          - accentor-api-env
+          - accentor-api.env
     steps:
     - uses: actions/checkout@v2.4.0
     - uses: cachix/install-nix-action@v15
