@@ -8,13 +8,13 @@
 
 mkYarnPackage rec {
   pname = "accentor-web";
-  version = "0.27.0";
+  version = "0.28.1";
 
   src = fetchFromGitHub {
     owner = "accentor";
     repo = "web";
     rev = "v${version}";
-    sha256 = "8cS0O74WFkp5WV96MuS1d5SAfnHtWgajpJUUHtT2yJ8=";
+    sha256 = "j3crpSMh9hGLNLnG9uBvYq4AkAug1fJ6k6xO8TcKPqA=";
   };
 
   inherit packageJSON yarnLock yarnNix;
