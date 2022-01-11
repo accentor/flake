@@ -1,0 +1,26 @@
+name: Update
+
+on:
+  schedule:
+    - cron: '42 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: cachix/install-nix-action@v15
+      - name: Cachix
+        uses: cachix/cachix-action@v10
+        with:
+          name: accentor
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          pushFilter: "(-source$|\\.tgz$|\\.gem$|-modules-|-offline$)"
+      - run: nix flake update
+      - run: nix build -L --no-link .#accentor-web
+      - run: nix build -L --no-link .#accentor-api
+      - run: nix build -L --no-link .#accentor-api.env
+      - uses: stefanzweifel/git-auto-commit-action@v4.6.0
+        with:
+          commit_message: "Update nixpkgs"
