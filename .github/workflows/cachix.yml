@@ -15,7 +15,10 @@ jobs:
         with:
           name: accentor
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          pushFilter: "(-source$|\\.tgz$|\\.gem$|-modules-|-offline$)"
+          skipPush: true
       - run: nix build -L --no-link .#accentor-web
       - run: nix build -L --no-link .#accentor-api
       - run: nix build -L --no-link .#accentor-api.env
+      - run: nix eval --json ".#accentor-web.outPath" | sed 's/"\(.*\)"/\1/' | cachix push accentor
+      - run: nix eval --json ".#accentor-api.outPath" | sed 's/"\(.*\)"/\1/' | cachix push accentor
+      - run: nix eval --json ".#accentor-api.env.outPath" | sed 's/"\(.*\)"/\1/' | cachix push accentor
