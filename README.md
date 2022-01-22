@@ -4,7 +4,7 @@ NixOS module for the [Accentor](https://github.com/accentor/) music server.
 
 ## Usage
 
-If you have your system set up with flakes, you can add the Accentor as a
+If you have your system set up with flakes, you can add Accentor as a
 service to your system flake:
 
 ```nix
@@ -44,3 +44,9 @@ Next, you can enable this service as if it is a normal NixOS service:
   };
 }
 ```
+
+## Cached artifacts
+
+Artifacts are cached on cachix. See
+[Cachix](https://app.cachix.org/cache/accentor) for setup
+instructions.
