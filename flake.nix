@@ -1,7 +1,7 @@
 {
   description = "A modern music server focusing on metadata";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
   outputs = { self, nixpkgs }:
     let
