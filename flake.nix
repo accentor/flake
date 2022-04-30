@@ -13,6 +13,10 @@
   };
   outputs = { self, nixpkgs, api, web }:
     rec {
+      packages.x86_64-linux = {
+        accentor-api = api.defaultPackage.x86_64-linux;
+        accentor-web = web.defaultPackage.x86_64-linux;
+      };
       nixosModules.accentor = import ./default.nix;
       nixosModule = nixosModules.accentor;
       overlay = (self: super: {
