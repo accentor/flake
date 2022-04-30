@@ -117,12 +117,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [
-      (self: super: {
-        accentor-api = self.callPackage ./pkgs/api.nix { };
-        accentor-web = self.callPackage ./pkgs/web.nix { };
-      })
-    ];
     environment.systemPackages = [ console ];
 
     services.postgresql = {
