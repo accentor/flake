@@ -72,14 +72,14 @@ in
     rescanTimer = {
       enable = mkEnableOption "automatic rescanning of all locations";
       dates = mkOption {
-        type =  types.str;
+        type = types.str;
         default = "04:44";
         description = ''
           Specification (in the format described by
           <citerefentry><refentrytitle>systemd.time</refentrytitle>
           <manvolnum>7</manvolnum></citerefentry>) of the time at
           which the rescan will be started.
-       '';
+        '';
       };
     };
 
@@ -177,23 +177,23 @@ in
 
       })
       cfg.workers)) // lib.optionalAttrs cfg.rescanTimer.enable {
-        accentor-rescan = {
-          description = "Accentor rescan";
-          restartIfChanged = false;
-          unitConfig.X-StopOnRemoval = false;
-          environment = env;
-          path = [ gems gems.wrappedRuby ];
-          serviceConfig = {
-            EnvironmentFile = cfg.environmentFile;
-            Type = "oneshot";
-            User = "accentor";
-            Group = "accentor";
-            WorkingDirectory = api;
-            ExecStart = "${gems}/bin/bundle exec rails rescan:start";
-          };
-          startAt = cfg.rescanTimer.dates;
+      accentor-rescan = {
+        description = "Accentor rescan";
+        restartIfChanged = false;
+        unitConfig.X-StopOnRemoval = false;
+        environment = env;
+        path = [ gems gems.wrappedRuby ];
+        serviceConfig = {
+          EnvironmentFile = cfg.environmentFile;
+          Type = "oneshot";
+          User = "accentor";
+          Group = "accentor";
+          WorkingDirectory = api;
+          ExecStart = "${gems}/bin/bundle exec rails rescan:start";
         };
+        startAt = cfg.rescanTimer.dates;
       };
+    };
 
     users.users.accentor = {
       group = "accentor";
