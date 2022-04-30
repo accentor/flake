@@ -11,7 +11,7 @@ service to your system flake:
 {
   # add this flake as an input
   inputs.accentor = {
-    url = "github:accentor/flake/main";
+    url = "github:accentor/flake";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -22,7 +22,8 @@ service to your system flake:
       system = "x86_64-linux";
       modules = [
         # Accentor music server
-        accentor.nixosModules.accentor
+        accentor.nixosModule
+        ({ nixpkgs.overlays = [ accentor.overlay ]; })
 
         # your configuration
         ./configuration.nix
