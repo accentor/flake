@@ -2,7 +2,7 @@
   description = "A modern music server focusing on metadata";
   inputs = {
     api = {
-      url = "github:accentor/api/v0.17.3";
+      url = "github:accentor/api/v0.18.1";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
@@ -10,7 +10,7 @@
       };
     };
     web = {
-      url = "github:accentor/web/v0.30.1";
+      url = "github:accentor/web/v0.31.0";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
@@ -34,7 +34,7 @@
       (system: {
         packages = {
           accentor-api = api.packages.${system}.default;
-          accentor-web = web.defaultPackage.${system};
+          accentor-web = web.packages.${system}.default;
         };
         devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlay ]; }; in
           pkgs.devshell.mkShell {
