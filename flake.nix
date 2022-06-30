@@ -45,8 +45,8 @@
       nixosModules.accentor = import ./default.nix;
       nixosModule = nixosModules.accentor;
       overlay = (self: super: {
-        accentor-api = api.defaultPackage.${self.system};
-        accentor-web = web.defaultPackage.${self.system};
+        accentor-api = api.packages.${self.system}.default;
+        accentor-web = web.packages.${self.system}.default;
       });
     };
 }
