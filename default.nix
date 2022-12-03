@@ -8,7 +8,6 @@ let
   gems = api.env;
   web = cfg.webPackage;
   env = {
-    BOOTSNAP_CACHE_DIR = "/var/tmp/accentor/bootsnap";
     DATABASE_URL = "postgresql://%2Frun%2Fpostgresql/accentor";
     FFMPEG_LOG_LOCATION = "/var/log/accentor/ffmpeg.log";
     FFMPEG_VERSION_LOCATION = "${cfg.home}/ffmpeg.version";
