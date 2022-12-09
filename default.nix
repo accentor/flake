@@ -140,7 +140,7 @@ in
     systemd.services = {
       accentor-api = {
         after = [ "network.target" "postgresql.service" ];
-        requires = [ "postgresql.service" ];
+        requires = [ "postgresql.service" "accentor-api.socket" ];
         wantedBy = [ "multi-user.target" ];
         environment = env;
         path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
@@ -197,6 +197,19 @@ in
       };
     };
 
+    systemd.sockets = {
+      accentor-api = {
+        wantedBy = [ "sockets.target" ];
+        wants = [ "accentor-api.service" ];
+        listenStreams = [ "3000" "/run/accentor/server.sock" ];
+        socketConfig = {
+          NoDelay = true;
+          ReusePort = true;
+          Backlog = 1024;
+        };
+      };
+    };
+
     users.users.accentor = {
       group = "accentor";
       home = cfg.home;
@@ -208,7 +221,7 @@ in
     services.nginx.upstreams = mkIf (cfg.nginx != null) {
       "accentor_api_server" = {
         servers = {
-          "${env.SOCKETFILE}" = {};
+          "unix:///run/accentor/server.sock" = {};
           "localhost:3000" = {
             backup = true;
           };
