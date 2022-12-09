@@ -13,6 +13,8 @@ let
     FFMPEG_LOG_LOCATION = "/var/log/accentor/ffmpeg.log";
     FFMPEG_VERSION_LOCATION = "${cfg.home}/ffmpeg.version";
     PIDFILE = "/run/accentor/server.pid";
+    STATEPATH = "/run/accentor/server.state";
+    SOCKETFILE = "unix:///run/accentor/server.sock";
     RACK_ENV = "production";
     RAILS_ENV = "production";
     RAILS_LOG_TO_STDOUT = "yes";
