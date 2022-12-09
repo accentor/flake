@@ -205,6 +205,17 @@ in
     };
     users.groups.accentor.gid = 314;
 
+    services.nginx.upstreams = mkIf (cfg.nginx != null) {
+      "accentor_api_server" = {
+        servers = {
+          "${env.SOCKETFILE}" = {};
+          "localhost:3000" = {
+            backup = true;
+          };
+        };
+      };
+    };
+
     services.nginx.virtualHosts = mkIf (cfg.nginx != null) {
       "${cfg.hostname}" = mkMerge [
         cfg.nginx
@@ -212,14 +223,14 @@ in
           root = web;
           locations = {
             "/api" = {
-              proxyPass = "http://localhost:3000";
+              proxyPass = "http://accentor_api_server";
               extraConfig = ''
                 proxy_set_header X-Forwarded-Ssl on;
                 client_max_body_size 40M;
               '';
             };
             "/rails" = {
-              proxyPass = "http://localhost:3000";
+              proxyPass = "http://accentor_api_server";
               extraConfig = ''
                 proxy_set_header X-Forwarded-Ssl on;
               '';
