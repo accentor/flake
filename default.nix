@@ -14,7 +14,7 @@ let
     FFMPEG_VERSION_LOCATION = "${cfg.home}/ffmpeg.version";
     PIDFILE = "/run/accentor/server.pid";
     STATEPATH = "/run/accentor/server.state";
-    SOCKETFILE = "unix:///run/accentor/server.sock";
+    SOCKETFILE = "unix:///run/accentor/server.socket";
     RACK_ENV = "production";
     RAILS_ENV = "production";
     RAILS_LOG_TO_STDOUT = "yes";
@@ -201,7 +201,7 @@ in
       accentor-api = {
         wantedBy = [ "sockets.target" ];
         wants = [ "accentor-api.service" ];
-        listenStreams = [ "3000" "/run/accentor/server.sock" ];
+        listenStreams = [ "3000" "/run/accentor/server.socket" ];
         socketConfig = {
           NoDelay = true;
           ReusePort = true;
@@ -221,7 +221,7 @@ in
     services.nginx.upstreams = mkIf (cfg.nginx != null) {
       "accentor_api_server" = {
         servers = {
-          "unix:///run/accentor/server.sock" = {};
+          "unix:///run/accentor/server.socket" = {};
           "localhost:3000" = {
             backup = true;
           };
