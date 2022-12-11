@@ -201,10 +201,9 @@ in
       accentor-api = {
         wantedBy = [ "sockets.target" ];
         wants = [ "accentor-api.service" ];
-        listenStreams = [ "3000" "/run/accentor/server.socket" ];
+        listenStreams = [ "/run/accentor/server.socket" ];
         socketConfig = {
           NoDelay = true;
-          ReusePort = true;
           Backlog = 1024;
         };
       };
