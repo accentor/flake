@@ -162,7 +162,7 @@ in
       (n: {
         "accentor-worker${toString n}" = {
           after = [ "network.target" "accentor-api.service" "postgresql.service" ];
-          requires = [ "accentor-api.service" "postgresql.service" ];
+          requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
           environment = env;
           path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
