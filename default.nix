@@ -155,7 +155,7 @@ in
             "${gems}/bin/bundle exec rails db:migrate"
             "${gems}/bin/bundle exec rails ffmpeg:check_version"
           ];
-          ExecStart = "${gems}/bin/bundle exec --keep-file-descriptors puma -C ${api}/config/puma.rb";
+          ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
       };
     } // (builtins.foldl' (x: y: x // y) { } (builtins.genList
