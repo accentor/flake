@@ -2,7 +2,7 @@
   description = "A modern music server focusing on metadata";
   inputs = {
     api = {
-      url = "github:accentor/api/v0.18.1";
+      url = "github:accentor/api/v0.18.2";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
