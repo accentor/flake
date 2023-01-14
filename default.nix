@@ -13,6 +13,8 @@ let
     FFMPEG_LOG_LOCATION = "/var/log/accentor/ffmpeg.log";
     FFMPEG_VERSION_LOCATION = "${cfg.home}/ffmpeg.version";
     PIDFILE = "/run/accentor/server.pid";
+    STATEPATH = "/run/accentor/server.state";
+    SOCKETFILE = "unix:///run/accentor/server.socket";
     RACK_ENV = "production";
     RAILS_ENV = "production";
     RAILS_LOG_TO_STDOUT = "yes";
@@ -138,7 +140,7 @@ in
     systemd.services = {
       accentor-api = {
         after = [ "network.target" "postgresql.service" ];
-        requires = [ "postgresql.service" ];
+        requires = [ "postgresql.service" "accentor-api.socket" ];
         wantedBy = [ "multi-user.target" ];
         environment = env;
         path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
@@ -153,14 +155,14 @@ in
             "${gems}/bin/bundle exec rails db:migrate"
             "${gems}/bin/bundle exec rails ffmpeg:check_version"
           ];
-          ExecStart = "${gems}/bin/bundle exec puma -C ${api}/config/puma.rb";
+          ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
       };
     } // (builtins.foldl' (x: y: x // y) { } (builtins.genList
       (n: {
         "accentor-worker${toString n}" = {
           after = [ "network.target" "accentor-api.service" "postgresql.service" ];
-          requires = [ "accentor-api.service" "postgresql.service" ];
+          requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
           environment = env;
           path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
@@ -195,6 +197,19 @@ in
       };
     };
 
+    systemd.sockets = {
+      accentor-api = {
+        wantedBy = [ "sockets.target" ];
+        wants = [ "accentor-api.service" ];
+        listenStreams = [ "0.0.0.0:3000" "/run/accentor/server.socket" ];
+        socketConfig = {
+          Backlog = 1024;
+          NoDelay = true;
+          ReusePort = true;
+        };
+      };
+    };
+
     users.users.accentor = {
       group = "accentor";
       home = cfg.home;
@@ -203,6 +218,17 @@ in
     };
     users.groups.accentor.gid = 314;
 
+    services.nginx.upstreams = mkIf (cfg.nginx != null) {
+      "accentor_api_server" = {
+        servers = {
+          "unix:///run/accentor/server.socket" = {};
+          "localhost:3000" = {
+            backup = true;
+          };
+        };
+      };
+    };
+
     services.nginx.virtualHosts = mkIf (cfg.nginx != null) {
       "${cfg.hostname}" = mkMerge [
         cfg.nginx
@@ -210,14 +236,14 @@ in
           root = web;
           locations = {
             "/api" = {
-              proxyPass = "http://localhost:3000";
+              proxyPass = "http://accentor_api_server";
               extraConfig = ''
                 proxy_set_header X-Forwarded-Ssl on;
                 client_max_body_size 40M;
               '';
             };
             "/rails" = {
-              proxyPass = "http://localhost:3000";
+              proxyPass = "http://accentor_api_server";
               extraConfig = ''
                 proxy_set_header X-Forwarded-Ssl on;
               '';
