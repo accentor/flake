@@ -103,16 +103,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1656611659,
-        "narHash": "sha256-L9aNgUXB8uoaqAePCrxdSrJIBksmKWzURUTs68DIEh4=",
+        "lastModified": 1673699984,
+        "narHash": "sha256-onQTXmRXDniJPjotpQj8jgrN1GxWCAONZyz+Ku6E0Oc=",
         "owner": "accentor",
         "repo": "web",
-        "rev": "fed9c035e09ce799c5891eff89ec57a165027f7c",
+        "rev": "c3e96a05bada9db917ff04e5fa189bcf7ab9c79b",
         "type": "github"
       },
       "original": {
         "owner": "accentor",
-        "ref": "v0.31.0",
+        "ref": "v0.31.1",
         "repo": "web",
         "type": "github"
       }

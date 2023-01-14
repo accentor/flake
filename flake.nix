@@ -10,7 +10,7 @@
       };
     };
     web = {
-      url = "github:accentor/web/v0.31.0";
+      url = "github:accentor/web/v0.31.1";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
