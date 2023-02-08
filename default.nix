@@ -222,9 +222,6 @@ in
       "accentor_api_server" = {
         servers = {
           "unix:///run/accentor/server.socket" = {};
-          "localhost:3000" = {
-            backup = true;
-          };
         };
       };
     };
