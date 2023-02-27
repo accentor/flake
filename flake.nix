@@ -42,9 +42,11 @@
             packages = [ pkgs.nixpkgs-fmt ];
           };
       }) // rec {
-      nixosModules.accentor = import ./default.nix;
-      nixosModule = nixosModules.accentor;
-      overlay = (self: super: {
+      nixosModules = rec {
+        accentor = import ./default.nix;
+        default = accentor;
+      };
+      overlays.default = (self: super: {
         accentor-api = api.packages.${self.system}.default;
         accentor-web = web.packages.${self.system}.default;
       });
