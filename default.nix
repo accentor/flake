@@ -20,6 +20,7 @@ let
     RAILS_LOG_TO_STDOUT = "yes";
     RAILS_STORAGE_PATH = "${cfg.home}/storage";
     RAILS_TRANSCODE_CACHE = "/var/tmp/accentor/transcode_cache";
+    RUBY_ENABLE_YJIT = "1";
   };
   exports = concatStringsSep
     "\n"
