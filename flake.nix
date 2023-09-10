@@ -35,7 +35,7 @@
           accentor-api = api.packages.${system}.default;
           accentor-web = web.packages.${system}.default;
         };
-        devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlay ]; }; in
+        devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlays.default ]; }; in
           pkgs.devshell.mkShell {
             name = "Accentor flake";
             packages = [ pkgs.nixpkgs-fmt ];
