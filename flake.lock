@@ -13,16 +13,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1683386378,
-        "narHash": "sha256-zdoHqZhcG8+9M6FLlYto5Yg+Cfu/HDVAFgy3T9qpfzQ=",
+        "lastModified": 1694859941,
+        "narHash": "sha256-7tb5zUIsqSEYi6yGTl+SmzWaJ2ecymFVC1VdAHrMTrA=",
         "owner": "accentor",
         "repo": "api",
-        "rev": "084c5fea2b4e914b842c2116854c40e85256daef",
+        "rev": "ae7665b046cca9d4ca96b6b50f32ebf93c15bac2",
         "type": "github"
       },
       "original": {
         "owner": "accentor",
-        "ref": "v0.19.0",
+        "ref": "v0.19.1",
         "repo": "api",
         "type": "github"
       }
@@ -134,16 +134,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1673699984,
-        "narHash": "sha256-onQTXmRXDniJPjotpQj8jgrN1GxWCAONZyz+Ku6E0Oc=",
+        "lastModified": 1694860173,
+        "narHash": "sha256-9ZsCRfZ9xHzkvQRRZ5gRqNjj+R4YAPTT+x3gvsrq/AY=",
         "owner": "accentor",
         "repo": "web",
-        "rev": "c3e96a05bada9db917ff04e5fa189bcf7ab9c79b",
+        "rev": "8fa6efde921c46e53d149ebfb142358b92acc6ac",
         "type": "github"
       },
       "original": {
         "owner": "accentor",
-        "ref": "v0.31.1",
+        "ref": "v0.32.0",
         "repo": "web",
         "type": "github"
       }
