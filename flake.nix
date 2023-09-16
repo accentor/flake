@@ -2,7 +2,7 @@
   description = "A modern music server focusing on metadata";
   inputs = {
     api = {
-      url = "github:accentor/api/v0.19.0";
+      url = "github:accentor/api/v0.19.1";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
@@ -10,7 +10,7 @@
       };
     };
     web = {
-      url = "github:accentor/web/v0.31.1";
+      url = "github:accentor/web/v0.32.0";
       inputs = {
         devshell.follows = "devshell";
         flake-utils.follows = "flake-utils";
@@ -21,7 +21,6 @@
       url = "github:numtide/devshell";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
       };
     };
     flake-utils = {
@@ -36,7 +35,7 @@
           accentor-api = api.packages.${system}.default;
           accentor-web = web.packages.${system}.default;
         };
-        devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlay ]; }; in
+        devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlays.default ]; }; in
           pkgs.devshell.mkShell {
             name = "Accentor flake";
             packages = [ pkgs.nixpkgs-fmt ];
