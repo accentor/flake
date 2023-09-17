@@ -70,7 +70,7 @@ in
       '';
       default = [ "default,within_30_seconds" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
       example = [ "default,within_30_seconds" "within_5_minutes:5;within_30_minutes:2;whenever:2" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
-      type = types.int;
+      type = types.listOf types.str;
     };
 
     delayedJobWorkers = mkOption {
