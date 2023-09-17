@@ -61,15 +61,14 @@ in
 
         The available options for queues are:
         * `*` (All queues)
-        * default
         * within_30_seconds
         * within_5_minutes
         * within_30_minutes
         * whenever
         Queues can be configured in different ways. Please check the good job docs for the possibilities: https://github.com/bensheldon/good_job#optimize-queues-threads-and-processes
       '';
-      default = [ "default,within_30_seconds" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
-      example = [ "default,within_30_seconds" "within_5_minutes:5;within_30_minutes:2;whenever:2" "+default,within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
+      default = [ "within_30_seconds" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
+      example = [ "within_30_seconds" "within_5_minutes:5;within_30_minutes:2;whenever:2" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
       type = types.listOf types.str;
     };
 
