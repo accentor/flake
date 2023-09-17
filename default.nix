@@ -180,14 +180,14 @@ in
           ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
       };
-    } // (builtins.foldl' (x: y: x // y) { } (builtins.genList
-      (index: {
+    } // (builtins.foldl' (x: y: x // y) { } (lib.lists.imap0
+      (index: value: {
         "accentor-worker-${toString (index)}" = {
           after = [ "network.target" "accentor-api.service" "postgresql.service" ];
           requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
           environment = env // {
-            GOOD_JOB_QUEUES = (builtins.elemAt cfg.workers index);
+            GOOD_JOB_QUEUES = value;
           };
           path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
           serviceConfig = {
@@ -200,8 +200,7 @@ in
             ExecStart = "${gems}/bin/bundle exec good_job start";
           };
         };
-      })
-      (builtins.length cfg.workers)))
+      })))
     // (builtins.foldl' (x: y: x // y) { } (builtins.genList
       (n: {
         "accentor-worker-delayed${toString n}" = {
