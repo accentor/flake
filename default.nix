@@ -56,7 +56,28 @@ in
     };
 
     workers = mkOption {
-      description = "Amount of background workers that should be spawned.";
+      description = ''
+        A list of background workers with the queues they should use. Each element in the list will spawn a worker with the queues passed.
+
+        The available options for queues are:
+        * `*` (All queues)
+        * within_30_seconds
+        * within_5_minutes
+        * within_30_minutes
+        * whenever
+        Queues can be configured in different ways. Please check the good job docs for the possibilities: https://github.com/bensheldon/good_job#optimize-queues-threads-and-processes
+      '';
+      default = [ "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
+      example = [ "within_30_seconds" "within_5_minutes:5;within_30_minutes:2;whenever:2" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
+      type = types.listOf types.str;
+    };
+
+    delayedJobWorkers = mkOption {
+      description = ''
+        Amount of background workers using Delayed Job that should be spawned.
+
+        This option is deprecated and should only be used to finish working existing jobs.
+      '';
       default = 4;
       example = 8;
       type = types.int;
@@ -159,9 +180,30 @@ in
           ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
       };
-    } // (builtins.foldl' (x: y: x // y) { } (builtins.genList
+    } // (builtins.foldl' (x: y: x // y) { } (lib.lists.imap0
+      (index: value: {
+        "accentor-worker-${toString (index)}" = {
+          after = [ "network.target" "accentor-api.service" "postgresql.service" ];
+          requires = [ "postgresql.service" ];
+          wantedBy = [ "multi-user.target" ];
+          environment = env // {
+            GOOD_JOB_QUEUES = value;
+          };
+          path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
+          serviceConfig = {
+            EnvironmentFile = cfg.environmentFile;
+            Type = "simple";
+            User = "accentor";
+            Group = "accentor";
+            Restart = "on-failure";
+            WorkingDirectory = api;
+            ExecStart = "${gems}/bin/bundle exec good_job start";
+          };
+        };
+      })))
+    // (builtins.foldl' (x: y: x // y) { } (builtins.genList
       (n: {
-        "accentor-worker${toString n}" = {
+        "accentor-worker-delayed${toString n}" = {
           after = [ "network.target" "accentor-api.service" "postgresql.service" ];
           requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
@@ -179,7 +221,7 @@ in
         };
 
       })
-      cfg.workers)) // lib.optionalAttrs cfg.rescanTimer.enable {
+      cfg.delayedJobWorkers)) // lib.optionalAttrs cfg.rescanTimer.enable {
       accentor-rescan = {
         description = "Accentor rescan";
         restartIfChanged = false;
@@ -222,7 +264,7 @@ in
     services.nginx.upstreams = mkIf (cfg.nginx != null) {
       "accentor_api_server" = {
         servers = {
-          "unix:///run/accentor/server.socket" = {};
+          "unix:///run/accentor/server.socket" = { };
         };
       };
     };
