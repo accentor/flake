@@ -200,7 +200,9 @@ in
             ExecStart = "${gems}/bin/bundle exec good_job start";
           };
         };
-      })))
+      })
+      cfg.workers
+    ))
     // (builtins.foldl' (x: y: x // y) { } (builtins.genList
       (n: {
         "accentor-worker-delayed${toString n}" = {
