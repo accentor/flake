@@ -72,17 +72,6 @@ in
       type = types.listOf types.str;
     };
 
-    delayedJobWorkers = mkOption {
-      description = ''
-        Amount of background workers using Delayed Job that should be spawned.
-
-        This option is deprecated and should only be used to finish working existing jobs.
-      '';
-      default = 4;
-      example = 8;
-      type = types.int;
-    };
-
     environmentFile = mkOption {
       description = ''
         Path to a file containing secret environment variables that should be
@@ -203,27 +192,7 @@ in
       })
       cfg.workers
     ))
-    // (builtins.foldl' (x: y: x // y) { } (builtins.genList
-      (n: {
-        "accentor-worker-delayed${toString n}" = {
-          after = [ "network.target" "accentor-api.service" "postgresql.service" ];
-          requires = [ "postgresql.service" ];
-          wantedBy = [ "multi-user.target" ];
-          environment = env;
-          path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
-          serviceConfig = {
-            EnvironmentFile = cfg.environmentFile;
-            Type = "simple";
-            User = "accentor";
-            Group = "accentor";
-            Restart = "on-failure";
-            WorkingDirectory = api;
-            ExecStart = "${gems}/bin/bundle exec rails jobs:work";
-          };
-        };
-
-      })
-      cfg.delayedJobWorkers)) // lib.optionalAttrs cfg.rescanTimer.enable {
+    // lib.optionalAttrs cfg.rescanTimer.enable {
       accentor-rescan = {
         description = "Accentor rescan";
         restartIfChanged = false;
