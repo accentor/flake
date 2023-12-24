@@ -135,7 +135,7 @@ in
     services.postgresql = {
       ensureUsers = [{
         name = "accentor";
-        ensurePermissions = { "DATABASE accentor" = "ALL PRIVILEGES"; };
+        ensureDBOwnership = true;
       }];
       ensureDatabases = [ "accentor" ];
     };
