@@ -11,7 +11,6 @@ let
     BOOTSNAP_READONLY = "TRUE";
     DATABASE_URL = "postgresql://%2Frun%2Fpostgresql/accentor";
     FFMPEG_LOG_LOCATION = "/var/log/accentor/ffmpeg.log";
-    FFMPEG_VERSION_LOCATION = "${cfg.home}/ffmpeg.version";
     PIDFILE = "/run/accentor/server.pid";
     STATEPATH = "/run/accentor/server.state";
     SOCKETFILE = "unix:///run/accentor/server.socket";
@@ -19,7 +18,7 @@ let
     RAILS_ENV = "production";
     RAILS_LOG_TO_STDOUT = "yes";
     RAILS_STORAGE_PATH = "${cfg.home}/storage";
-    RAILS_TRANSCODE_CACHE = "/var/tmp/accentor/transcode_cache";
+    RAILS_TRANSCODES_PATH = "${cfg.home}/transcodes";
     RUBY_ENABLE_YJIT = "1";
   };
   exports = concatStringsSep
