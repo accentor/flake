@@ -163,7 +163,6 @@ in
           WorkingDirectory = api;
           ExecStartPre = [
             "${gems}/bin/bundle exec rails db:migrate"
-            "${gems}/bin/bundle exec rails ffmpeg:check_version"
           ];
           ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
