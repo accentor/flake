@@ -213,7 +213,7 @@ in
       accentor-api = {
         wantedBy = [ "sockets.target" ];
         wants = [ "accentor-api.service" ];
-        listenStreams = [ "0.0.0.0:3000" "/run/accentor/server.socket" ];
+        listenStreams = [ "[::]:3000" "/run/accentor/server.socket" ];
         socketConfig = {
           Backlog = 1024;
           NoDelay = true;
