@@ -46,8 +46,8 @@
         default = accentor;
       };
       overlays.default = (self: super: {
-        accentor-api = api.packages.${self.system}.default;
-        accentor-web = web.packages.${self.system}.default;
+        accentor-api = api.packages.${self.stdenv.hostPlatform.system}.default;
+        accentor-web = web.packages.${self.stdenv.hostPlatform.system}.default;
       });
     };
 }
