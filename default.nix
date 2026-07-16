@@ -9,7 +9,7 @@ let
   web = cfg.webPackage;
   env = {
     BOOTSNAP_READONLY = "TRUE";
-    DATABASE_URL = "postgresql://%2Frun%2Fpostgresql/accentor";
+    DATABASE_URL = "postgresql://accentor?host=/run/postgresql";
     FFMPEG_LOG_LOCATION = "/var/log/accentor/ffmpeg.log";
     PIDFILE = "/run/accentor/server.pid";
     STATEPATH = "/run/accentor/server.state";
