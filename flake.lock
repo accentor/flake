@@ -2,6 +2,7 @@
   "nodes": {
     "api": {
       "inputs": {
+        "bundix": "bundix",
         "devshell": [
           "devshell"
         ],
@@ -13,17 +14,38 @@
         ]
       },
       "locked": {
-        "lastModified": 1741438548,
-        "narHash": "sha256-OaTYFmBTtcL3aSaM0zYnA7TfN+e0tknCADtKZH4YwDc=",
+        "lastModified": 1786795374,
+        "narHash": "sha256-xiJBuZpa7BhU1B7XpO27poMOVE8PWyVGwkpH1KY3WnA=",
         "owner": "accentor",
         "repo": "api",
-        "rev": "46e31e6017ad66e9e51c357473f426c25bf901cb",
+        "rev": "0c1f8d94dc944cbcf58c5a0a2e1fb16cd7833ee4",
         "type": "github"
       },
       "original": {
         "owner": "accentor",
-        "ref": "v0.23.0",
+        "ref": "v0.24.0",
         "repo": "api",
+        "type": "github"
+      }
+    },
+    "bundix": {
+      "inputs": {
+        "nixpkgs": [
+          "api",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762235257,
+        "narHash": "sha256-QyXFgaXQETr9BmwUbWM/2EtF+my6Arpt71xItZy3NL8=",
+        "owner": "inscapist",
+        "repo": "bundix",
+        "rev": "2233b24084316b4de1d55321483554f457a09cfc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "inscapist",
+        "repo": "bundix",
         "type": "github"
       }
     },
