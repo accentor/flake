@@ -5,7 +5,6 @@
       url = "github:accentor/api/v0.24.0";
       inputs = {
         devshell.follows = "devshell";
-        flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -13,41 +12,43 @@
       url = "github:accentor/web/v0.35.0";
       inputs = {
         devshell.follows = "devshell";
-        flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs";
       };
     };
     devshell = {
       url = "github:numtide/devshell";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    flake-utils = {
-      url = "github:numtide/flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
-  outputs = { self, api, web, devshell, flake-utils, nixpkgs }:
-    flake-utils.lib.eachDefaultSystem
-      (system: {
-        packages = {
-          accentor-api = api.packages.${system}.default;
-          accentor-web = web.packages.${system}.default;
-        };
-        devShell = let pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlays.default ]; }; in
-          pkgs.devshell.mkShell {
-            name = "Accentor flake";
-            packages = [ pkgs.nixpkgs-fmt ];
-          };
-      }) // rec {
-      nixosModules = rec {
+  outputs = inputs:
+    {
+      packages = builtins.mapAttrs
+        (system: pkgs: {
+          accentor-api = inputs.api.packages.${system}.default;
+          accentor-web = inputs.web.packages.${system}.default;
+        })
+        inputs.nixpkgs.legacyPackages;
+      devShells = builtins.mapAttrs
+        (system: pkgs':
+          let
+            pkgs = pkgs'.extend inputs.devshell.overlays.default;
+          in
+          {
+            flake = pkgs.devshell.mkShell {
+              name = "Accentor flake";
+              packages = [ pkgs.nixpkgs-fmt ];
+            };
+            default = inputs.self.devShells.${system}.flake;
+          })
+        inputs.nixpkgs.legacyPackages;
+      nixosModules = {
         accentor = import ./default.nix;
-        default = accentor;
+        default = inputs.self.nixosModules.accentor;
       };
       overlays.default = (self: super: {
-        accentor-api = api.packages.${self.stdenv.hostPlatform.system}.default;
-        accentor-web = web.packages.${self.stdenv.hostPlatform.system}.default;
+        accentor-api = inputs.api.packages.${self.stdenv.hostPlatform.system}.default;
+        accentor-web = inputs.web.packages.${self.stdenv.hostPlatform.system}.default;
       });
     };
 }
