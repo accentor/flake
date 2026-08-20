@@ -11,7 +11,7 @@ jobs:
           - accentor-api
           - accentor-api.env
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v7.0.1
     - uses: cachix/install-nix-action@v31
     - name: Build ${{ matrix.pkg }}
       run: nix build .#${{ matrix.pkg }}
