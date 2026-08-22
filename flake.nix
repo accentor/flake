@@ -9,7 +9,7 @@
       };
     };
     web = {
-      url = "github:accentor/web/v0.35.0";
+      url = "github:accentor/web/v0.34.0";
       inputs = {
         devshell.follows = "devshell";
         nixpkgs.follows = "nixpkgs";

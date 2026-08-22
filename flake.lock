@@ -169,16 +169,16 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1787230177,
-        "narHash": "sha256-TMSh3POqyJBSLHLGAOgn6EMiIjSKs/UbHkXznj6/RDE=",
+        "lastModified": 1741440992,
+        "narHash": "sha256-O1kMLtg0x183WFeRR2UZAjuUE/5DAYBEGkw5SplTaq0=",
         "owner": "accentor",
         "repo": "web",
-        "rev": "d6adca24621c2395ffc599ed02490d38562e39af",
+        "rev": "17a27f8ac166214d2e40710c7892d861961ee55d",
         "type": "github"
       },
       "original": {
         "owner": "accentor",
-        "ref": "v0.35.0",
+        "ref": "v0.34.0",
         "repo": "web",
         "type": "github"
       }
