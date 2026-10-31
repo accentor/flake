@@ -48,6 +48,6 @@ Next, you can enable this service as if it is a normal NixOS service:
 
 ## Cached artifacts
 
-Artifacts are cached on cachix. See
-[Cachix](https://app.cachix.org/cache/accentor) for setup
-instructions.
+Artifacts are cached on attic. The URL and key are
+`https://attic.chvp.be/accentor` and
+`accentor:LYqiRop66dumMxKcBpayTpbnJEjAbb1ZfNwNtldW9iM=`, respectively.

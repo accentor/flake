@@ -1,5 +1,9 @@
 name: Nix
-on: [push]
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
 
 jobs:
   nix:
@@ -11,7 +15,18 @@ jobs:
           - accentor-api
           - accentor-api.env
     steps:
-    - uses: actions/checkout@v7.0.1
-    - uses: cachix/install-nix-action@v31
-    - name: Build ${{ matrix.pkg }}
-      run: nix build .#${{ matrix.pkg }}
+      - uses: actions/checkout@v7.0.1
+      - name: Install nix
+        uses: NixOS/nix-installer-action@main
+        with:
+          extra-conf: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            experimental-features = nix-command flakes
+      - name: Attic
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: https://attic.chvp.be
+          cache: accentor
+          token: '${{ secrets.ATTIC_AUTH_TOKEN }}'
+      - name: Build ${{ matrix.pkg }}
+        run: nix build .#${{ matrix.pkg }}
