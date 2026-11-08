@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -21,9 +26,7 @@ let
     RAILS_TRANSCODES_PATH = "${cfg.home}/transcodes";
     RUBY_ENABLE_YJIT = "1";
   };
-  exports = concatStringsSep
-    "\n"
-    (mapAttrsToList (name: value: "export ${name}=\"${value}\"") env);
+  exports = concatStringsSep "\n" (mapAttrsToList (name: value: "export ${name}=\"${value}\"") env);
   console = pkgs.writeShellScriptBin "accentor-console" ''
     set -ex
     ${exports}
@@ -34,7 +37,8 @@ let
 in
 {
   options.services.accentor = {
-    enable = mkEnableOption ''Accentor music server.
+    enable = mkEnableOption ''
+      Accentor music server.
 
       Accentor provides an API through a Ruby on Rails application which can be
       accessed using the Web UI.
@@ -67,7 +71,11 @@ in
         Queues can be configured in different ways. Please check the good job docs for the possibilities: https://github.com/bensheldon/good_job#optimize-queues-threads-and-processes
       '';
       default = [ "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
-      example = [ "within_30_seconds" "within_5_minutes:5;within_30_minutes:2;whenever:2" "+within_30_seconds,within_5_minutes,within_30_minutes,whenever" ];
+      example = [
+        "within_30_seconds"
+        "within_5_minutes:5;within_30_minutes:2;whenever:2"
+        "+within_30_seconds,within_5_minutes,within_30_minutes,whenever"
+      ];
       type = types.listOf types.str;
     };
 
@@ -132,10 +140,12 @@ in
     environment.systemPackages = [ console ];
 
     services.postgresql = {
-      ensureUsers = [{
-        name = "accentor";
-        ensureDBOwnership = true;
-      }];
+      ensureUsers = [
+        {
+          name = "accentor";
+          ensureDBOwnership = true;
+        }
+      ];
       ensureDatabases = [ "accentor" ];
     };
 
@@ -149,11 +159,21 @@ in
 
     systemd.services = {
       accentor-api = {
-        after = [ "network.target" "postgresql.service" ];
-        requires = [ "postgresql.service" "accentor-api.socket" ];
+        after = [
+          "network.target"
+          "postgresql.service"
+        ];
+        requires = [
+          "postgresql.service"
+          "accentor-api.socket"
+        ];
         wantedBy = [ "multi-user.target" ];
         environment = env;
-        path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
+        path = [
+          pkgs.ffmpeg
+          gems
+          gems.wrappedRuby
+        ];
         serviceConfig = {
           EnvironmentFile = cfg.environmentFile;
           Type = "simple";
@@ -167,16 +187,25 @@ in
           ExecStart = "${gems}/bin/puma -C ${api}/config/puma.rb";
         };
       };
-    } // (builtins.foldl' (x: y: x // y) { } (lib.lists.imap0
-      (index: value: {
+    }
+    // (builtins.foldl' (x: y: x // y) { } (
+      lib.lists.imap0 (index: value: {
         "accentor-worker-${toString (index)}" = {
-          after = [ "network.target" "accentor-api.service" "postgresql.service" ];
+          after = [
+            "network.target"
+            "accentor-api.service"
+            "postgresql.service"
+          ];
           requires = [ "postgresql.service" ];
           wantedBy = [ "multi-user.target" ];
           environment = env // {
             GOOD_JOB_QUEUES = value;
           };
-          path = [ pkgs.ffmpeg gems gems.wrappedRuby ];
+          path = [
+            pkgs.ffmpeg
+            gems
+            gems.wrappedRuby
+          ];
           serviceConfig = {
             EnvironmentFile = cfg.environmentFile;
             Type = "simple";
@@ -187,8 +216,7 @@ in
             ExecStart = "${gems}/bin/bundle exec good_job start";
           };
         };
-      })
-      cfg.workers
+      }) cfg.workers
     ))
     // lib.optionalAttrs cfg.rescanTimer.enable {
       accentor-rescan = {
@@ -196,7 +224,10 @@ in
         restartIfChanged = false;
         unitConfig.X-StopOnRemoval = false;
         environment = env;
-        path = [ gems gems.wrappedRuby ];
+        path = [
+          gems
+          gems.wrappedRuby
+        ];
         serviceConfig = {
           EnvironmentFile = cfg.environmentFile;
           Type = "oneshot";
@@ -213,7 +244,10 @@ in
       accentor-api = {
         wantedBy = [ "sockets.target" ];
         wants = [ "accentor-api.service" ];
-        listenStreams = [ "[::]:3000" "/run/accentor/server.socket" ];
+        listenStreams = [
+          "[::]:3000"
+          "/run/accentor/server.socket"
+        ];
         socketConfig = {
           Backlog = 1024;
           NoDelay = true;
