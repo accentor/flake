@@ -9,7 +9,7 @@
       url = "github:accentor/web/v0.35.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   };
   outputs = inputs: {
     packages = builtins.mapAttrs (system: pkgs: {
